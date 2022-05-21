@@ -68,6 +68,7 @@ const App = () => {
     setCurrentPage(1);
     setImages([]);
     setError(null);
+    isFirstRender.current = true;
   };
 
   const toggleModal = (src = '') => setSelectedImage(src);
