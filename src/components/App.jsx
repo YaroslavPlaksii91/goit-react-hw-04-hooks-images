@@ -17,9 +17,7 @@ const App = () => {
   const [selectedImage, setSelectedImage] = useState('');
 
   useEffect(() => {
-    if (!searchQuery) {
-      return;
-    }
+    if (!searchQuery) return;
 
     const fetchImages = async () => {
       try {
@@ -39,21 +37,18 @@ const App = () => {
     fetchImages();
   }, [currentPage, searchQuery]);
 
-  const updatePage = () => {
-    setCurrentPage(prevPage => prevPage + 1);
-  };
+  const updatePage = () => setCurrentPage(prevPage => prevPage + 1);
 
   const onFormSubmit = query => {
     if (query === searchQuery && currentPage === 1) return;
+
     setSearchQuery(query);
     setCurrentPage(1);
     setImages([]);
     setError(null);
   };
 
-  const toggleModal = (src = '') => {
-    setSelectedImage(src);
-  };
+  const toggleModal = (src = '') => setSelectedImage(src);
 
   return (
     <div
@@ -78,86 +73,5 @@ const App = () => {
     </div>
   );
 };
-
-// class oldApp extends Component {
-//   state = {
-//     images: [],
-//     searchQuery: '',
-//     error: null,
-//     currentPage: 1,
-//     isLoading: false,
-//     showModal: false,
-//     selectedImage: '',
-//   };
-
-//   async componentDidUpdate(prevProps, prevState) {
-//     if (prevState.searchQuery !== this.state.searchQuery) {
-//       this.fetchImages();
-//     }
-//   }
-
-//   onFormSubmit = query => {
-//     this.setState({
-//       searchQuery: query,
-//       currentPage: 1,
-//       images: [],
-//       error: null,
-//     });
-//   };
-
-//   fetchImages = async () => {
-//     try {
-//       const { currentPage, searchQuery } = this.state;
-
-//       this.setState({ isLoading: true });
-
-//       const images = await fetchImagesAPI(searchQuery, currentPage);
-//       this.setState(prevState => ({
-//         images: [...prevState.images, ...images],
-//         currentPage: prevState.currentPage + 1,
-//       }));
-
-//       if (images.length === 0) return toast.warn('Sorry, no such images.');
-//     } catch (error) {
-//       this.setState({ error });
-//     } finally {
-//       this.setState({ isLoading: false });
-//     }
-//   };
-
-//   toggleModal = (src = '') => {
-//     this.setState(({ showModal }) => ({
-//       showModal: !showModal,
-//       selectedImage: src,
-//     }));
-//   };
-
-//   render() {
-//     const { images, isLoading, error, selectedImage, showModal } = this.state;
-
-//     return (
-//       <div
-//         style={{
-//           display: 'grid',
-//           gridTemplateColumns: '1fr',
-//           gridGap: '16px',
-//           paddingBottom: '24px',
-//         }}
-//       >
-//         {error && <p>{error.message}</p>}
-
-//         <Searchbar onSubmit={this.onFormSubmit} />
-//         <ImageGallery images={images} showModal={this.toggleModal} />
-//         {isLoading && <Loader type="bubble-loop" size={60} bgColor="blue" />}
-//         {images.length > 0 && !isLoading && (
-//           <Button onClick={this.fetchImages}>Load more</Button>
-//         )}
-
-//         {showModal && <Modal onClose={this.toggleModal} src={selectedImage} />}
-//         <ToastContainer autoClose={3000} />
-//       </div>
-//     );
-//   }
-// }
 
 export default App;
