@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
@@ -15,6 +15,7 @@ const App = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (!searchQuery) return;
@@ -36,6 +37,27 @@ const App = () => {
 
     fetchImages();
   }, [currentPage, searchQuery]);
+
+  useLayoutEffect(() => {
+    if (images.length === 0) return;
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    function smoothScroll() {
+      const { height: cardHeight } = document
+        .querySelector('#gallery')
+        .firstElementChild.getBoundingClientRect();
+
+      window.scrollBy({
+        top: cardHeight * 1.75,
+        behavior: 'smooth',
+      });
+    }
+
+    smoothScroll();
+  }, [images.length]);
 
   const updatePage = () => setCurrentPage(prevPage => prevPage + 1);
 
