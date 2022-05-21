@@ -21,7 +21,7 @@ ImageGallery.propTypes = {
       id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,
       largeImageURL: PropTypes.string.isRequired,
-    })
+    }),
   ).isRequired,
   showModal: PropTypes.func.isRequired,
 };
